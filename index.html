@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多裝置互控遠距提詞機</title>
+
+    <meta name="description" content="這是一個遠距提詞機網頁，網站使用Peer.js這個簡易的WebRTC函式庫，來達成裝置間的連線、互相控制以及資料傳輸，無須註冊便可使用。">
+    <meta name="keywords" content="提詞, 提詞機, 提詞機網頁, 提詞程式, 遠距提詞機, 遠距提詞程式">
+    <meta name="author" content="The Walking Fish">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/css.css">
+    <link rel="stylesheet" type="text/css" href="css/RWD.css">
+</head>
+<body>
+
+    <div class="tookBar">
+        <i class="fa fa-edit" onclick="openWindow('editWindow')"></i>
+        <i class="fa material-icons" onclick="flipMode()">flip</i>
+        <!--i class="fa material-icons">rotate_90_degrees_ccw</i-->
+        <i class="fa fa-gear" onclick="openWindow('settingWindow')"></i>
+        <i class="fa fa-qrcode" onclick="openWindow('shareWindow')"></i>
+        <i class="fa fa-play playAndPauseButton" onclick="playSwitch()"></i>
+        <i class="fa fa-info" onclick="openWindow('infoWindow')"></i>
+    </div>
+
+    <div class="redLine"></div>
+
+    <div class="subtitleEdittWindow window">
+        <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
+
+        <h2>編輯文稿</h2>
+
+        <div>
+            <textarea id="subtitle"></textarea>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <span class="button" onclick="subtitleChange(); subtitleDisplay(document.querySelector('#subtitle').value); document.querySelector('.subtitleEdittWindow').classList.remove('active')">儲存並廣播此字幕</span>
+            <span class="button cancel" onclick="document.querySelector('.subtitleEdittWindow').classList.remove('active'); document.querySelector('#subtitle').value = tempSubtitle">取消</span>
+        </div>
+        
+    </div>
+
+    <div class="shareWindow window">
+        <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
+
+        <h2>進行連接</h2>
+        <div id="qrcodeContainer">
+            <img id="qrcode" src="" alt="">
+        </div>
+        
+        <div>
+            <input id="shareUrl" type="text" readonly>
+        </div>
+        
+        <div>
+            目前連接裝置: <span id="connectDeviceNum">0</span>
+        </div>
+        
+    </div>
+
+    <div class="settingWindow window">
+        <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
+
+        <h2>設定</h2>
+        <div class="settingGrid">
+
+            <span>字體大小:</span>
+            <input id="fontSize" class="settingInput" type="range" value="24" max="128" min="1">
+            <span>24px</span>
+
+
+            <span>文字間距:</span>
+            <input id="letterSpacing" class="settingInput" type="range" value="0" max="128" min="0">
+            <span>0px</span>
+
+
+            <span>文字行距:</span>
+            <input id="lineHeight" class="settingInput" type="range" value="26" max="128" min="1">
+            <span>26px</span>
+
+
+            <span>字幕邊距:</span>
+            <input id="subtitlePadding" class="settingInput" type="range" value="0" max="128" min="0">
+            <span>0px</span>
+            
+            <span>自動播放速度:</span>
+            <input id="speedInput" class="settingInput" type="range" value="5" max="30" min="1">
+            <span>5</span>
+
+        </div>
+        
+        
+        
+    </div>
+
+    <div class="connectWindow window">
+        <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
+
+        <h2>連接</h2>
+
+        <p><b>檢測到網址包含ID</b></p>
+        <input style="text-align: center;" id="connectID" type="text" value="" readonly>
+        <p><b>是否進行連接</b></p>
+
+        
+
+        <div>
+            
+            <span class="button" onclick="conn2Peer(document.querySelector('#connectID').value); this.innerHTML= '<span class=\'spinner-border\'></span>'">連接</span>
+            <span class="button cancel" onclick="document.querySelector('.connectWindow').classList.remove('active')">取消</span>
+        </div>
+        
+    </div>
+
+    <div class="infoWindow window">
+        <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
+
+        <h2>多裝置互控遠距提詞機 Ver.1.0</h2>
+
+        <div class="content" style="text-align: left; padding: 1rem;">
+
+            <h2>網頁簡介</h2>
+            <p>　　此網站的製作是受到知名YouTuber六指淵 Huber的【遠端提詞機神器】所啟發，目的在於製造一個不需中心伺服器儲存資料，便可以裝置間P2P連線互控的提詞機網頁。</p>
+            <p>　　網站使用Peer.js這個簡易的WebRTC函式庫，來達成裝置間的連線以及資料傳輸，網站無須先註冊帳號，也無須將講稿儲存在任何伺服器上，可以即開即用。因為本人無架設伺服器，所以無須擔心本人因為成本問題而關閉伺服器。</p>
+            <p>　　本網站以300px最為基準進行過縮放，理論上各裝置字體大小、行距等會一致，請安心食用。</p>
+            
+            <hr>
+
+            <h2>關於作者</h2>
+            <p>　　本人目前為一個大學生，做這些Side Project一方面是好玩，然後可以作為個人YouTube頻道【<a href="https://www.youtube.com/@the_walking_fish" target="_blank">The walking fish</a>】的題材(偷推廣一下)，一方面是希望可以放在未來的履歷內，希望這個網站可以幫助到需要的人。</p>
+            <p>　　若對網站有任何改進的建議，可以寄信至以下Email信箱，我會視情況進行調整(如果有想要贊助也可以寄Email，但贊助版位在這個網站其實也只剩下這裡可以放啦www)。</p>
+            <p>Email: <a href="mailto:2.jerry32262686@gmail.com">2.jerry32262686@gmail.com</a></p>
+
+            <hr>
+
+            <h2>網站功能介紹</h2>
+            <h3>影片介紹</h3>
+            <p>【上片再補】</p>
+            <hr>
+
+            <h3>基本功能介紹</h3>
+            <p>一、滑鼠移動或螢幕觸控時，將會開啟手動操作模式，並且左側會顯示工具列(如圖一)，超過5秒無操作則會進入被控制模式。</p>
+            <img src="img/step1.jpeg"><label>▲圖一 手動操作時，顯示工具列</label>
+
+            <p>二、工具列最上方的按鈕為文稿編輯，在裡面可以放入欲顯示的文稿，完成編輯後，點擊【儲存並廣播此字幕】，便可讓文稿顯示在畫面上(如圖二、圖三)。</p>
+            <img src="img/step2.jpg"><label>▲圖二 編輯頁面</label>
+            <img src="img/step3.jpg"><label>▲圖三 字幕顯示</label>
+
+            <p>三、工具列第二個按鈕為左右鏡像，使文字可正常於提詞機上顯示(如圖四)。</p>
+            <img src="img/step4.jpg"><label>▲圖四 鏡像</label>
+
+            <p>四、工具列第三個按鈕為設定，可控制文字大小、行距、間距、自動播放速度(如影片一)。</p>
+            <video src="img/vid1.mp4" loop autoplay muted></video><br><label>▲影片一 設定</label>
+
+            <p>五、工具列第四個按鈕為裝置連線，只要掃瞄QR Code或是至其他裝置開啟分享連結，便可使裝置連線互相操作(如影片二)。</p>
+            <video src="img/vid2.mp4" loop autoplay muted></video><br><label>▲影片二 連線示範</label>
+            
+            <p>六、工具列第五個按鈕為自動播放(如影片三)。</p>
+            <video src="img/vid3.mp4" loop autoplay muted></video><br><label>▲影片三 自動播放</label>
+
+            <p>七、工具列第六個按鈕為網站資訊(你都點進來了，看來應該是沒問題)，這裡有基本功能介紹，然後底部有更新日誌。</p>
+            <img src="img/step5.jpg"><label>▲圖五 資訊頁面</label>
+
+            <hr>
+
+            <h3>連線互控功能介紹</h3>
+            <p>一、要使用連線互控功能，首先需要點擊工具列的QR Code圖標(第四個按鈕)，掃瞄QR Code或是至其他裝置開啟分享連結，在開啟後點擊確認連線，便可使裝置建立連線，互相控制(如影片二)。</p>
+            <video src="img/vid2.mp4" loop autoplay muted></video><br><label>▲影片二 連線示範</label>
+
+            <p>二、請注意，若有新連線的裝置，需在有字幕的裝置上重新至【文稿編輯頁面】，點擊【儲存並廣播此字幕】，重新發送給各裝置字幕。</p>
+            <img src="img/step2.jpg"><label>▲圖二 編輯頁面</label>
+
+
+            <hr>
+            <h2>贊助版位</h2>
+            <hr>
+            <a href="https://www.youtube.com/@the_walking_fish" target="_blank"><img src="img/support/the_walking_fish.jpg" style="width: 100%;" title="The walking fish(我的)YouTube頻道"></a>
+
+            <hr>
+
+            <h2>更新日誌</h2>
+            <p class="new">Ver.1.0 網頁發布</p>            
+
+        </div>
+        
+    </div>
+
+    <section class="subtitleContainer">
+
+        
+    </section>
+
+    <script type="text/javascript" src="js/peerjs.min.js"></script>
+
+    <script>
+        const canWakeLock = () => 'wakeLock' in navigator;
+        //alert(canWakeLock())
+
+        let wakelock;
+        async function lockWakeState() {
+            if(!canWakeLock()) return;
+            try {
+                wakelock = await navigator.wakeLock.request();
+                wakelock.addEventListener('release', () => {
+                console.log('Screen Wake State Locked:', !wakelock.released);
+                });
+                console.log('Screen Wake State Locked:', !wakelock.released);
+            } catch(e) {
+                console.error('Failed to lock wake state with reason:', e.message);
+            }
+        }
+
+        function controling(){
+            let tookBar = document.querySelector(".tookBar");
+            tookBar.classList.add("active");
+            controlMode = true;
+            clearTimeout(timeer);
+
+            timeer = setTimeout(()=>{
+                tookBar.classList.remove("active");
+                controlMode = false;
+            }, 5000)
+        }
+
+        var timeer;
+        document.addEventListener("mousemove", ()=>{
+            controling()
+        })
+        /*document.addEventListener("scroll", ()=>{
+            controling()
+        })*/
+        document.addEventListener("touchmove", ()=>{
+            controling()
+        })
+    </script>
+
+    <script>
+        var controlMode = false;
+        var peerStatus = false;
+
+        var sendable = true;
+        var sendCD = 100;
+
+        var peer = new Peer({ config: {
+            iceServers: [
+                { urls: "stun:stun.l.google.com:19302" },
+                { urls: "turn:0.peerjs.com:3478", username: "peerjs", credential: "peerjsp" }
+            ],
+            sdpSemantics: "unified-plan",
+            iceTransportPolicy: "relay" // <- it means using only relay server (our free turn server in this case)
+        }});
+
+        //console.log(peer.id)
+
+        var Conns = [];
+        var ids = [];
+        peer.on('connection', function(conn) {
+
+            conn.on('data', function(data){
+                // Will print 'hi!'
+                data = JSON.parse(data);
+                console.log(data);
+                switch(data['type']){
+                    case 'conn':
+                        conn2Peer(data['data']);
+                        document.querySelector('.connectWindow').classList.remove('active');
+                        refreshDeviceNum()
+                        
+                        break;
+
+                    case 'scroll':
+                        //if(!controlMode)
+                        if(!controlMode)
+                            document.documentElement.scrollTo({top: data['data']/data['scale']*scale, behavior: "smooth"});
+
+                        var playSwitchTimeout;
+                        if(document.querySelector(".playAndPauseButton").classList.contains("fa-pause")){
+                            playSwitch();
+                            clearTimeout(playSwitchTimeout);
+                            playSwitchTimeout = setTimeout(() => {
+                                playSwitch()
+                            }, 5000);
+                        }
+                        break;
+
+                    case 'setting':
+                        document.body.style.setProperty('--fs', data['data'][0]+'px')
+                        document.body.style.setProperty('--ls', data['data'][1]+'px')
+                        document.body.style.setProperty('--lh', data['data'][2]+'px')
+                        document.body.style.setProperty('--sp', data['data'][4]+'px')
+                        speed = data['data'][3];
+                        settingInputFitValue()
+                        break;
+
+                    case 'text':
+                        if(document.querySelector("#subtitle").value != data['data']){
+                            document.querySelector("#subtitle").value = data['data']
+                            subtitleDisplay(data['data'])
+                        }
+                        //console.log(data['data'])
+                        break;
+
+                    default:
+                        break;
+
+                }
+                
+                //conn.send("RECEIVE");
+            });
+
+            //Conns.push(conn);
+        });
+
+        //連接
+        function conn2Peer(id){
+
+            if(ids.includes(id))
+                return;
+
+            ids.push(id);
+            var conn = peer.connect(id);
+            conn.on('open', function(){
+
+                ids.forEach((item)=>{
+                    let allIdData = {
+                        "type": "conn",
+                        "data": item
+                    }
+                    conn.send(JSON.stringify(allIdData));
+                })
+                /*
+                let data = {
+                    "type": "conn",
+                    "data": peer.id
+                }
+                conn.send(JSON.stringify(data));
+                */
+                Conns.push(conn);
+            });
+
+        }
+
+        //傳資料
+        function sendMessage(data){
+
+            console.log(data)
+            data = JSON.stringify(data);
+
+            Conns.forEach((conn)=>{
+
+                conn.send(data);
+
+            });
+
+        }
+
+
+        var generateQrCode = setInterval(()=>{
+            if(peer.id != null){
+                ids.push(peer.id)
+                let url = window.location.protocol + "//" + window.location.host + location.pathname + "?" + peer.id;
+                document.querySelector("#shareUrl").value = url;
+                document.querySelector("#qrcode").src = "https://chart.googleapis.com/chart?cht=qr&chl=" + url + "&chs=256x256";
+                clearInterval(generateQrCode);
+                peerStatus = true;
+                //檢查網址列
+                if(location.href.includes("?")){
+                    document.querySelector(".connectWindow").classList.add("active");
+                    document.querySelector("#connectID").value = location.href.split("?")[1];
+                }
+            }
+                
+        }, 1000)
+
+        /*document.querySelector("#subtitle").addEventListener("change", ()=>{
+        var tempSubtitle = "";
+        function subtitleChange(){
+            if(ids.length <= 0)
+                return;
+            let d = {
+                "type": "text",
+                "data": document.querySelector("#subtitle").value
+            }
+            sendMessage(d);
+        }
+        })*/
+
+        var scale = document.body.clientWidth/300;
+        document.body.style.setProperty("--scale", scale);
+        window.addEventListener("resize", ()=>{
+            scale = document.body.clientWidth/300;
+            document.body.style.setProperty("--scale", scale);
+        })
+        document.addEventListener("scroll", ()=>{
+            if(controlMode && sendable){
+                sendMessage({"type": "scroll", "data": document.documentElement.scrollTop, "scale": scale})
+                
+                sendable = false;
+
+                setTimeout(()=>{
+                    sendable = true;
+                }, 20)
+                
+            }
+                
+        })
+
+
+    </script>
+
+    <script src="js/customFunction.js"></script>
+
+</body>
+</html>

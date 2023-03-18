@@ -1,0 +1,261 @@
+:root{
+    --backgroundColor: rgb(30, 30, 30);
+    --buttonBackground: rgba(60, 60, 60, 1);
+    --hoverColor: rgb(80, 180, 255);
+    --fs: 24px;
+    --lh: 26px;
+    --lineTop: 50vh;
+    --ls: 0px;
+    --sp: 0px;
+    --scale: 1;
+}
+
+*{
+    box-sizing: border-box;
+    /*scroll-behavior: smooth;*/
+}
+
+body{
+    background-color: black;
+    overflow-x: hidden;
+}
+
+.tookBar{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 2rem;
+
+    top: 50%;
+    transform: translate(0, -50%);
+
+    transition: 0.5s;
+    left: -5rem;
+    z-index: 10;
+
+    user-select: none;
+}
+
+.tookBar.active{
+    left: 8px;
+}
+
+.tookBar .fa{
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--buttonBackground);
+    cursor: pointer;
+    margin: 4px 0;
+    text-align: center;
+}
+
+.tookBar .fa.active, .tookBar .fa:hover{
+    /*border: 1px solid var(--hoverColor);*/
+    color: var(--backgroundColor);
+    background-color: var(--hoverColor);
+}
+
+.material-icons{
+    font-size: 2rem;
+}
+
+.redLine{
+    position: fixed;
+    left: 0;
+    top: var(--lineTop);
+    /*transform: translate(0, -50%);*/
+    display: block;
+    height: calc(2px * var(--scale));
+    width: 100vw;
+    background-color: rgba(255, 0, 0, 0.5);
+}
+/*
+.subtitleContainer{
+    padding: 50vh 0;
+}
+*/
+.subtitleContainer{
+    color: white;
+    font-size: calc(var(--fs));
+    letter-spacing: calc(var(--ls));
+    line-height: calc(var(--lh));
+    padding-left: var(--sp);
+    padding-right: var(--sp);
+
+    word-wrap: break-word;
+
+    width:300px;
+    transform: scale(var(--scale));
+    transform-origin: top left;
+    padding-top: calc(var(--lineTop) / var(--scale));
+    padding-bottom: calc(var(--lineTop) / var(--scale));
+}
+
+.subtitleDisplayer{
+
+}
+
+#subtitle{
+    width: 100%;
+    height: 25rem;
+    border: none;
+    color: black;
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 8px 8px 8px 24px;
+}
+
+#subtitle:read-only{
+    color: white;
+    background-color: var(--backgroundColor);
+}
+
+.subtitleContainer.flip .subtitleDisplayer{
+    transform: scaleX(-1);
+}
+
+.window{
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--buttonBackground);
+    border-radius: 20px;
+    box-shadow: 0 0 20px black;
+    width: 80vw;
+    height: 80vh;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    color: white;
+    z-index: 10;
+}
+
+.window.active{
+    display: flex;
+}
+
+.window .closeButton{
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+}
+
+.window .closeButton:hover{
+    background-color: white;
+    color: var(--buttonBackground);
+}
+
+.window div{
+    text-align: center;
+}
+
+.window #qrcodeContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.window img{
+    display: inherit !important;
+}
+
+#shareUrl{
+    width: 80%;
+    height: 2rem;
+    font-size: 1.5rem;
+    border: none;
+    margin-top: 1rem;
+    border:  2px solid white;
+    border-radius: 0.5rem;
+}
+
+.button{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--hoverColor);
+    border: 2px solid var(--hoverColor);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:hover{
+    background: var(--hoverColor);
+    color: var(--backgroundColor);
+}
+
+.button.cancel:hover{
+    background: red;
+    color: white;
+}
+
+#connectID{
+    border-radius: 0.5rem;
+    font-size: 2rem;
+    background-color: var(--buttonBackground);
+    border: white 2px solid;
+    color: white;
+}
+
+input[type="number"]{
+    border: 2px solid white;
+    border-radius: 0.5rem;
+    background-color: var(--buttonBackground);
+    color: white;
+}
+
+.infoWindow .content{
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.infoWindow img, .infoWindow video{
+    width: 50%;
+    box-shadow: black 0 0 15px;
+}
+
+.infoWindow label{
+    margin-bottom: 3rem;
+}
+
+p.new::before{
+    content: "New ";
+    color: red;
+    font-weight: bold;
+}
+
+p.old::before{
+    content: "New ";
+    color: transparent;
+    font-weight: bold;
+
+}
+
+a{
+    color: rgb(145, 176, 255);
+}
+
+.settingInput{
+    flex: 1;
+}
+
+.settingGrid{
+    display: grid;
+    grid-template-columns: 1fr 3rem;
+    text-align: left;
+    gap: 0.5rem;
+}
+
+.settingGrid > input{
+    grid-column-start: 1;
+}
+
+.settingGrid > span{
+    text-align: left;
+}
