@@ -87,8 +87,8 @@
 
 
             <span>字幕邊距:</span>
-            <input id="subtitlePadding" class="settingInput" type="range" value="0" max="128" min="0">
-            <span>0px</span>
+            <input id="subtitlePadding" class="settingInput" type="range" value="6" max="128" min="0">
+            <span>6px</span>
             
             <span>自動播放速度:</span>
             <input id="speedInput" class="settingInput" type="range" value="5" max="30" min="1">
@@ -200,22 +200,7 @@
     <script type="text/javascript" src="js/peerjs.min.js"></script>
 
     <script>
-        const canWakeLock = () => 'wakeLock' in navigator;
-        //alert(canWakeLock())
-
-        let wakelock;
-        async function lockWakeState() {
-            if(!canWakeLock()) return;
-            try {
-                wakelock = await navigator.wakeLock.request();
-                wakelock.addEventListener('release', () => {
-                console.log('Screen Wake State Locked:', !wakelock.released);
-                });
-                console.log('Screen Wake State Locked:', !wakelock.released);
-            } catch(e) {
-                console.error('Failed to lock wake state with reason:', e.message);
-            }
-        }
+        setTimeout("document.body.style.background = 'black'", 10000);
 
         function controling(){
             let tookBar = document.querySelector(".tookBar");
@@ -248,14 +233,16 @@
         var sendable = true;
         var sendCD = 100;
 
-        var peer = new Peer({ config: {
-            iceServers: [
-                { urls: "stun:stun.l.google.com:19302" },
-                { urls: "turn:0.peerjs.com:3478", username: "peerjs", credential: "peerjsp" }
-            ],
-            sdpSemantics: "unified-plan",
-            iceTransportPolicy: "relay" // <- it means using only relay server (our free turn server in this case)
-        }});
+        // var peer = new Peer({ config: {
+        //     iceServers: [
+        //         { urls: "stun:stun.l.google.com:19302" },
+        //         { urls: "turn:0.peerjs.com:3478", username: "peerjs", credential: "peerjsp" }
+        //     ],
+        //     sdpSemantics: "unified-plan",
+        //     iceTransportPolicy: "relay" // <- it means using only relay server (our free turn server in this case)
+        // }});
+
+        var peer = new Peer();
 
         //console.log(peer.id)
 
