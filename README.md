@@ -1,4 +1,4 @@
-# 遠距提詞機
+# 多裝置互控遠距提詞機
 
 ![tz](https://user-images.githubusercontent.com/106337749/226092753-73d2f518-5271-469b-834d-2fa37507efc9.png)
 
