@@ -2,7 +2,7 @@
 
 ![tz](https://user-images.githubusercontent.com/106337749/226092753-73d2f518-5271-469b-834d-2fa37507efc9.png)
 
-> 此專案為網頁程式，並使用PeerJs來做P2P資料傳輸，無需將文稿儲存於伺服器上
+> 此專案為網頁程式，並使用PeerJs來做P2P資料傳輸，無需將文稿儲存於任何伺服器上
 
 專案網址: [https://adt109119.github.io/remoteMultideviceTeleprompter/](https://adt109119.github.io/remoteMultideviceTeleprompter/)
 
@@ -20,15 +20,15 @@
 
 實現提詞機的功能
 
-並且支援裝置間互相控制
+且支援裝置間互相控制
 
-所有裝置都會顯示相同的畫面(字體比例、文稿位置等)
+讓所有裝置都可顯示相同的畫面、在相同文稿位置
 
 使用其中一台裝置
 
 便可操縱所有裝置
 
-或觀看目前提詞機文稿位置
+方便遠距進行調整
 
 
 ## 功能
