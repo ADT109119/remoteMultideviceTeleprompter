@@ -48,6 +48,7 @@ document.addEventListener("keydown", (e)=>{
         e.preventDefault();
         playSwitch();
     }
+    controling();
 })
 
 //改設定
