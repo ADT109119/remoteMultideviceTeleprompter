@@ -91,8 +91,8 @@
             <span>6px</span>
             
             <span>自動播放速度:</span>
-            <input id="speedInput" class="settingInput" type="range" value="5" max="30" min="1">
-            <span>5</span>
+            <input id="speedInput" class="settingInput" type="range" value="4" max="30" min="1">
+            <span>4</span>
 
         </div>
         
@@ -122,7 +122,7 @@
     <div class="infoWindow window">
         <span class="closeButton" onclick="this.parentElement.classList.remove('active')">×</span>
 
-        <h2>多裝置互控遠距提詞機 Ver.1.0</h2>
+        <h2>多裝置互控遠距提詞機 Ver 1.2</h2>
 
         <div class="content" style="text-align: left; padding: 1rem;">
 
@@ -186,7 +186,9 @@
             <hr>
 
             <h2>更新日誌</h2>
-            <p class="new">Ver.1.0 網頁發布</p>            
+            <p class="new">Ver 1.2 修復編輯文稿頁面的空白鍵Bug、以及字體統一改用Noto Sans TC</p>            
+            <p class="old">Ver 1.1 修改部分設定的預設值</p>            
+            <p class="old">Ver 1.0 網頁發布</p>            
 
         </div>
         
@@ -278,7 +280,7 @@
                         break;
 
                     case 'setting':
-                        document.body.style.setProperty('--fs', data['data'][0]+'px')
+                        document.body.style.setProperty('--fs', data['data'][0])
                         document.body.style.setProperty('--ls', data['data'][1]+'px')
                         document.body.style.setProperty('--lh', data['data'][2]+'px')
                         document.body.style.setProperty('--sp', data['data'][4]+'px')
@@ -388,12 +390,12 @@
         document.addEventListener("scroll", ()=>{
             if(controlMode && sendable){
                 sendMessage({"type": "scroll", "data": document.documentElement.scrollTop, "scale": scale})
-                
-                sendable = false;
 
-                setTimeout(()=>{
-                    sendable = true;
-                }, 20)
+                // sendable = false;
+
+                // setTimeout(()=>{
+                //     sendable = true;
+                // }, 20)
                 
             }
                 

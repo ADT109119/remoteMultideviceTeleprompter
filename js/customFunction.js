@@ -20,6 +20,14 @@ function autoPlay(){
     }, 100);
 }
 
+function pause(){
+    let button = document.querySelector(".playAndPauseButton");
+    button.classList.remove("fa-pause");
+    button.classList.add("fa-play");
+    clearInterval(autoPlayInterval);
+    sendable = true;
+}
+
 function playSwitch(){
     let button = document.querySelector(".playAndPauseButton");
     if(button.classList.contains("fa-play")){
@@ -34,8 +42,9 @@ function playSwitch(){
     }
 }
 
+let subtitleElement = document.querySelector("#subtitle")
 document.addEventListener("keydown", (e)=>{
-    if(e.key == " "){
+    if(e.key == " " && e.target != subtitleElement){
         e.preventDefault();
         playSwitch();
     }
@@ -49,7 +58,7 @@ function settingChange(){
     let sp = document.querySelector("#subtitlePadding").value;
     speed = document.querySelector("#speedInput").value;
 
-    document.body.style.setProperty('--fs', fs+'px')
+    document.body.style.setProperty('--fs', fs)
     document.body.style.setProperty('--ls', ls+'px')
     document.body.style.setProperty('--lh', lh+'px')
     document.body.style.setProperty('--sp', sp+'px')
@@ -78,7 +87,7 @@ function settingInputFitValue(){
     document.querySelector("#subtitlePadding").value = sp.replace("px", "");
     document.querySelector("#speedInput").value = speed;
 
-    document.querySelector("#fontSize + span").innerHTML = fs;
+    document.querySelector("#fontSize + span").innerHTML = fs + 'px';
     document.querySelector("#letterSpacing + span").innerHTML = ls;
     document.querySelector("#lineHeight + span").innerHTML = lh;
     document.querySelector("#subtitlePadding + span").innerHTML = sp;

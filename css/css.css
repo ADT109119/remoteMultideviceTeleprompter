@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
+
 :root{
     --backgroundColor: rgb(30, 30, 30);
     --buttonBackground: rgba(60, 60, 60, 1);
     --hoverColor: rgb(80, 180, 255);
-    --fs: 24px;
+    --fs: 24;
     --lh: 26px;
     --lineTop: 50vh;
     --ls: 0px;
@@ -77,7 +79,7 @@ body{
 */
 .subtitleContainer{
     color: white;
-    font-size: calc(var(--fs));
+    font-size: calc(var(--fs) / 16 * 1rem);
     letter-spacing: calc(var(--ls));
     line-height: calc(var(--lh));
     padding-left: var(--sp);
@@ -92,13 +94,17 @@ body{
     padding-bottom: calc(var(--lineTop) / var(--scale));
 }
 
-.subtitleDisplayer{
+body::-webkit-scrollbar {
+    display: none;
+}
 
+.subtitleDisplayer{
+    font-family: 'Noto Sans TC', sans-serif;
 }
 
 #subtitle{
     width: 100%;
-    height: 25rem;
+    height: 50vh;
     border: none;
     color: black;
     background-color: white;
