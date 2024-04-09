@@ -172,6 +172,30 @@ body::-webkit-scrollbar {
     display: inherit !important;
 }
 
+.window .leftTop{
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(30,30,30,1) 50%, rgba(0,0,0,0) 50%);
+    border-radius: 20px 0 0 0;
+    text-align: center;
+    padding: 8px 0 0 8px;
+}
+
+.window .leftTop img{
+    box-shadow: none;
+    width: 30px;
+    height: 30px;
+    transition: 0.2s;
+}
+
+.window .leftTop:hover img{
+    opacity: 0.6;
+}
+
 #shareUrl{
     width: 80%;
     height: 2rem;
