@@ -202,6 +202,7 @@
     </section>
 
     <script type="text/javascript" src="js/peerjs.min.js"></script>
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
 
     <script>
         setTimeout("document.body.style.background = 'black'", 10000);
@@ -353,12 +354,22 @@
         }
 
 
+        
+
         var generateQrCode = setInterval(()=>{
             if(peer.id != null){
                 ids.push(peer.id)
                 let url = window.location.protocol + "//" + window.location.host + location.pathname + "?" + peer.id;
                 document.querySelector("#shareUrl").value = url;
-                document.querySelector("#qrcode").src = "https://chart.googleapis.com/chart?cht=qr&chl=" + url + "&chs=256x256";
+                var qrcode = new QRCode(document.getElementById("qrcodeContainer"), {
+                    text: url,
+                    width: 256,
+                    height: 256,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.L
+                });
+                // document.querySelector("#qrcode").src = "https://chart.googleapis.com/chart?cht=qr&chl=" + url + "&chs=256x256";
                 clearInterval(generateQrCode);
                 peerStatus = true;
                 //檢查網址列
