@@ -56,6 +56,7 @@
 - HTML
 - CSS
 - JavaScript
+- [qrcodejs](https://github.com/davidshimjs/qrcodejs)
 
 ## 聯絡作者
 
